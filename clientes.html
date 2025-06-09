@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clientes - Distribuciones ROCA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+   <link href="./css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Modal Confirmar Eliminación -->
+<div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-danger">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="modalEliminarLabel"><i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Eliminación</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro que deseas eliminar este cliente? Esta acción no se puede deshacer.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" id="confirmarEliminarBtn" class="btn btn-danger">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="assets/logo.png" 
+           alt="Logo Distribuciones ROCA" 
+           width="50" height="50" 
+           class="rounded-circle shadow me-2 border border-light" />
+      <span class="fs-4 fw-bold">Distribuciones ROCA</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="Index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+        <li class="nav-item"><a class="nav-link" href="clientes.html">Clientes</a></li>
+        <li class="nav-item"><a class="nav-link" href="facturas.html">Facturas</a></li>
+        <li class="nav-item"><a class="nav-link" href="deudas.html">Deudas</a></li>
+        <li class="nav-item"><a class="nav-link" href="ventas.html">Vemtas</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <!-- Encabezado -->
+  <div class="container py-4">
+    <h2 class="text-center mb-4 fw-bold">Gestión de Clientes</h2>
+
+    <!-- Formulario de Registro -->
+    <div class="card shadow mb-4">
+      <div class="card-header bg-primary text-white">
+        <i class="bi bi-person-plus-fill me-2"></i>Registrar Cliente
+      </div>
+      <div class="card-body">
+        <form id="clienteForm" class="row g-3">
+          <div class="col-md-6">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" id="nombre" class="form-control" required />
+          </div>
+          <div class="col-md-6">
+            <label for="nit" class="form-label">NIT</label>
+            <input type="text" id="nit" class="form-control" required />
+          </div>
+          <div class="col-md-6">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" id="direccion" class="form-control" required />
+          </div>
+          <div class="col-md-6">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="text" id="telefono" class="form-control" required />
+          </div>
+       <div class="col-12 text-end">
+  <button type="button" id="cancelarEdicion" class="btn btn-secondary me-2 d-none">
+    <i class="bi bi-x-circle me-1"></i>Cancelar
+  </button>
+  <button type="submit" class="btn btn-success" id="btnGuardar">
+    <i class="bi bi-save2-fill me-1"></i>Guardar Cliente
+  </button>
+</div>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- Tabla de Clientes -->
+    <div class="card shadow">
+      <div class="card-header bg-dark text-white">
+        <i class="bi bi-people-fill me-2"></i>Lista de Clientes
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0" id="tablaClientes">
+            <thead class="table-light">
+              <tr>
+                <th>Nombre</th>
+                <th>NIT</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="clientesBody">
+              <!-- Aquí se insertan los clientes desde Firebase -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="./js/firebase.js"></script>
+  <script type="module" src="./js/clientes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <footer class="text-center py-3 mt-5 border-top text-muted">
+  Distribuciones ROCA &copy; 2025 - Todos los derechos reservados.
+</footer>
+
+</body>
+</html>

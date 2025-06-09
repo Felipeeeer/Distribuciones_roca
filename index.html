@@ -1,0 +1,227 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Distribuciones ROCA</title>
+  <link class="shortcut icon" href="assets/logo.png" type="image/png" />
+  <link href="./css/styles.css" rel="stylesheet">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#343a40" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="assets/logo.png" alt="Logo" width="50" height="50" class="rounded-circle shadow me-2 border border-light" />
+        <span class="fs-4 fw-bold">Distribuciones ROCA</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+          <li class="nav-item"><a class="nav-link" href="clientes.html">Clientes</a></li>
+          <li class="nav-item"><a class="nav-link" href="facturas.html">Facturas</a></li>
+          <li class="nav-item"><a class="nav-link" href="deudas.html">Deudas</a></li>
+          <li class="nav-item"><a class="nav-link" href="ventas.html">Ventas</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido principal -->
+  <div class="container py-4">
+    <h1 class="text-center mb-4">Bienvenido a Distribuciones ROCA</h1>
+
+    <div class="row g-4">
+      <!-- Ventas del Día -->
+      <div class="col-md-6 col-xl-3">
+        <div class="card card-dashboard text-white bg-success h-100 shadow-lg" >
+          <div class="card-body d-flex align-items-center">
+            <i class="bi bi-cash-coin me-3"></i>
+            <div>
+              <h5 class="card-title">Ventas Hoy</h5>
+              <p class="card-text fs-4" id="ventasHoy">$0</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Deudas Pendientes -->
+    <div class="col-md-6 col-xl-3">
+  <div class="card card-dashboard text-white bg-danger h-100 shadow-lg">
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-3" >
+        <i class="bi bi-exclamation-circle-fill me-3 fs-3"></i>
+        <div>
+          <h5 class="card-title mb-0">Deudas</h5>
+          <small class="text-light">Resumen actual</small>
+        </div>
+      </div>
+      <div>
+        <p class="mb-2">
+          <i class="bi bi-cup-straw me-2"></i>
+          <span class="badge bg-info text-dark" id="envasesAdeudados">Envases: 0</span>
+        </p>
+        <p class="mb-2">
+          <i class="bi bi-box-seam me-2"></i>
+          <span class="badge bg-light text-dark" id="canastasAdeudadas">Canastas: 0</span>
+        </p>
+        <p class="mb-0">
+          <i class="bi bi-cash-stack me-2"></i>
+          <span class="badge bg-success" id="saldoAdeudado">$0</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+      <!-- Inventario Actual -->
+      <div class="col-md-6 col-xl-3">
+        <div class="card card-dashboard text-white bg-warning h-100 shadow-lg">
+          <div class="card-body d-flex align-items-center">
+            <i class="bi bi-box-seam me-3"></i>
+            <div>
+              <h5 class="card-title">Inventario</h5>
+              <p class="card-text fs-4" id="productosContainer">0 Canastas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <!-- Detalle de inventario y alertas -->
+    <div class="mt-4">
+      <div id="alertaBajoStock"></div>
+      <h5>Detalle por producto:</h5>
+      <ul class="list-group" id="detalleInventario"></ul>
+    </div>
+
+    <div id="app" class="mt-5"></div>
+  </div>
+
+  <!-- Dependencias -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="./js/firebase.js"></script>
+  <script type="module" src="./js/productos.js"></script>
+  <script type="module">
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+    import { app } from './js/firebase.js';
+
+    const db = getDatabase(app);
+
+    // 1) Inventario
+    const productosRef = ref(db, 'productos');
+    const productosContainer = document.getElementById("productosContainer");
+    const detalleInventario = document.getElementById("detalleInventario");
+    const alertaBajoStock = document.getElementById("alertaBajoStock");
+
+    onValue(productosRef, snapshot => {
+      let totalCanastas = 0;
+      detalleInventario.innerHTML = "";
+      alertaBajoStock.innerHTML = "";
+      const bajos = [];
+
+      snapshot.forEach(s => {
+        const prod = s.val();
+        const nombre = prod.nombre || "Sin nombre";
+        const stock = prod.stockCanastas || 0;
+        totalCanastas += stock;
+
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.innerHTML = `
+          ${nombre}
+          <span class="badge bg-primary rounded-pill">${stock} canastas</span>
+        `;
+        detalleInventario.appendChild(li);
+
+        if (stock < 5) bajos.push({nombre, stock});
+      });
+
+      productosContainer.textContent = `${totalCanastas} Canastas`;
+
+      if (bajos.length) {
+        const alertBox = document.createElement("div");
+        alertBox.className = "alert alert-danger";
+        alertBox.innerHTML = `
+          <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+          <strong>¡Atención!</strong> Productos con bajo stock:
+          <ul class="mt-2 mb-0">
+            ${bajos.map(p=>`<li>${p.nombre}: ${p.stock} canastas</li>`).join("")}
+          </ul>
+        `;
+        alertaBajoStock.appendChild(alertBox);
+      }
+    });
+    
+    // 3) Ventas del día
+    const ventasHoyEl = document.getElementById("ventasHoy");
+
+onValue(ref(db, "ventas"), snapshot => {
+  let total = 0;
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
+  snapshot.forEach(child => {
+    const v = child.val();
+    const fechaVenta = new Date(v.fecha);
+    fechaVenta.setHours(0, 0, 0, 0);
+
+    if (fechaVenta.getTime() === hoy.getTime()) {
+      total += v.total || 0;
+    }
+  });
+
+  ventasHoyEl.textContent = total.toLocaleString("es-CO", {
+    style: "currency",
+    currency: "COP",
+    minimumFractionDigits: 0,
+  });
+});
+// DEUDAS: mostrar totales combinados en una tarjeta
+const deudasRef = ref(db, 'deudas');
+const envasesAdeudados = document.getElementById('envasesAdeudados');
+const canastasAdeudadas = document.getElementById('canastasAdeudadas');
+const saldoAdeudado = document.getElementById('saldoAdeudado');
+
+onValue(deudasRef, snapshot => {
+  let totalEnvases = 0;
+  let totalCanastas = 0;
+  let totalSaldo = 0;
+
+  snapshot.forEach(s => {
+    const deuda = s.val();
+    if (!deuda.saldada) {
+      totalEnvases += Number(deuda.envases || 0);
+      totalCanastas += Number(deuda.canastas || 0);
+      totalSaldo += Number(deuda.saldo || 0);
+    }
+  });
+
+  envasesAdeudados.textContent = totalEnvases;
+  canastasAdeudadas.textContent = totalCanastas;
+  saldoAdeudado.textContent = `$${totalSaldo.toLocaleString()}`;
+});
+
+ </script>
+
+  <footer class="text-center py-3 mt-5 border-top text-muted">
+    Distribuciones ROCA &copy; 2025 - Todos los derechos reservados.
+  </footer>
+</body>
+</html>

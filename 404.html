@@ -1,0 +1,111 @@
+<<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Error 404 - Distribuciones ROCCA</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body, html {
+      height: 100%;
+      background: linear-gradient(135deg, #0d6efd, #6610f2);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .error-container {
+      max-width: 480px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      box-shadow: 0 0 20px rgba(255,255,255,0.15);
+      animation: fadeInScale 1s ease forwards;
+    }
+    h1 {
+      font-size: 6rem;
+      font-weight: 900;
+      margin-bottom: 0;
+      letter-spacing: 8px;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    }
+    h2 {
+      font-weight: 700;
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.2);
+    }
+    p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      color: #e0e0e0;
+    }
+    .btn-primary {
+      background: #6610f2;
+      border: none;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(102,16,242,0.5);
+      transition: background 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: #0d6efd;
+      box-shadow: 0 6px 20px rgba(13,110,253,0.7);
+    }
+    /* Animación suave */
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    /* Icono 404 estilo */
+    .error-icon {
+      font-size: 6rem;
+      margin-bottom: 1rem;
+      color: #fff;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="error-container shadow-lg">
+    <div class="error-icon">
+      <!-- Icono de exclamación con Bootstrap Icons -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.964 0L.165 13.233c-.457.778.091 1.767.982 1.767h13.706c.89 0 1.438-.99.982-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1-2.002 0 1 1 0 0 1 2.002 0z"/>
+      </svg>
+    </div>
+    <h1>404</h1>
+    <h2>¡Página no encontrada!</h2>
+    <p>Lo sentimos, la página que buscas no existe o fue movida.</p>
+    <button id="btnHome" class="btn btn-primary btn-lg">Volver al inicio</button>
+  </div>
+
+  <!-- Bootstrap JS + Popper (opcional para algunos componentes) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('btnHome').addEventListener('click', () => {
+      // Cambia la URL aquí a tu página principal real
+      window.location.href = '/';
+    });
+  </script>
+</body>
+</html>
